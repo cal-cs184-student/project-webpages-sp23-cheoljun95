@@ -330,10 +330,21 @@
     If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
 </b>
 <p>
-    Not implemented.
+    Boundary edges are handled by creating and rewiring non-boundary parts only. One special care is done to point non-boundary face to m->b and c->m. 
 </p>
 <br>
 
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/part5_boundary.png" align="middle" width="800px"/>
+        <figcaption>Edge split on the boundary (from maxplanck.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
 
 <h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
 <b>
