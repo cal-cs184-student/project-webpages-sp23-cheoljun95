@@ -1,7 +1,526 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-1 here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    background-color: white;
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  kbd {
+    color: #121212;
+  }
+</style>
+<title>CS 184 Path Tracer</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
+<h1 align="middle">Project 3-1: Path Tracer</h1>
+<h2 align="middle">YOUR NAME(S)</h2>
+
+<!-- Add Website URL -->
+<h2 align="middle">Website URL: <a href=https://cal-cs184-student.github.io/project-webpages-sp23-cheoljun95/proj3-1/index.html>TODO</a></h2>
+
+<br><br>
+
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+          <img src="images/example_image.png" width="480px" />
+          <figcaption align="middle">Results Caption: my bunny is the bounciest bunny</figcaption>
+      </tr>
+  </table>
+</div>
+
+<p>All of the text in your write-up should be <em>in your own words</em>. If you need to add additional HTML features to this document, you can search the <a href="http://www.w3schools.com/">http://www.w3schools.com/</a> website for instructions. To edit the HTML, you can just copy and paste existing chunks and fill in the text and image file names appropriately.</p>
+<o>The website writeup is intended to be a self-contained walkthrough of the assignment: we want this to be a piece of work which showcases your understanding of relevant concepts through both mesh images as well as written explanations about what you did to complete each part of the assignment. Try to be as clear and organized as possible when writing about your own output files or extensions to the assignment. We want to understand what you've achieved and how you've done it!</p> 
+<p>If you are well-versed in web development, feel free to ditch this template and make a better looking page.</p>
+
+
+<p>Here are a few problems students have encountered in the past. Test your website on the instructional machines early!</p>
+<ul>
+<li>Your main report page should be called index.html.</li>
+<li>Be sure to include and turn in all of the other files (such as images) that are linked in your report!</li>
+<li>Use only <em>relative</em> paths to files, such as <pre>"./images/image.jpg"</pre>
+Do <em>NOT</em> use absolute paths, such as <pre>"/Users/student/Desktop/image.jpg"</pre></li>
+<li>Pay close attention to your filename extensions. Remember that on UNIX systems (such as the instructional machines), capitalization matters. <pre>.png != .jpeg != .jpg != .JPG</pre></li>
+<li>Be sure to adjust the permissions on your files so that they are world readable. For more information on this please see this tutorial: <a href="http://www.grymoire.com/Unix/Permissions.html">http://www.grymoire.com/Unix/Permissions.html</a></li>
+<li>And again, test your website on the instructional machines early!</li>
+</ul>
+
+
+<p>Here is an example of how to include a simple formula:</p>
+<p align="middle"><pre align="middle">a^2 + b^2 = c^2</pre></p>
+<p>or, alternatively, you can include an SVG image of a LaTex formula.</p>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>
+    This project is for having a hand-on experience in ray sampling ray and path tracing to render illumination of the given objects. To this end, the implementation goals are composed of checking intersections, accelerating intersecting with Bounding Volume Hierarchy (BVH), calculating direct/global illumination, and monte calro & adaptive sampling for further accelaration. 
+</p>
+<br>
+
+<h2 align="middle">Part 1: Ray Generation and Scene Intersection (20 Points)</h2>
+<!-- Walk through the ray generation and primitive intersection parts of the rendering pipeline.
+Explain the triangle intersection algorithm you implemented in your own words.
+Show images with normal shading for a few small .dae files. -->
+
+<h3>
+  Walk through the ray generation and primitive intersection parts of the rendering pipeline.
+</h3>
+<p>
+    In the rendering pipeline, the ray is generated to simulate the behavior of light that comes into the camera. Then, the pipeline checks any intersections with the objects in the scene, and if any, the photometric information is calculated to be plotted on the screen.
+</p>
+<br>
+
+<h3>
+  Explain the triangle intersection algorithm you implemented in your own words.
+</h3>
+<p>
+    First of all, I checked if the ray hits the plane of the triangle, by calculating t with the given ray-plane intersection equation.
+    It is checked as interecting when t lies on the valid range. Then, we get the actual point on the plane using the t, and get barycentric coordinates. If any of the coordinate is negative that means out of the triangle, so false is returned. Otherwise, 
+    the ray is examined to intersect with the triangle and isect components are updated accordingly.
+</p>
+<br>
+
+<h3>
+  Show images with normal shading for a few small .dae files.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/part1_ex1.png" align="middle" width="400px"/>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part1_ex1.png dae/simple/cube.dae-->
+        <figcaption>cube.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part1_ex2.png dae/meshedit/cow.dae -->
+        <img src="images/part1_ex2.png" align="middle" width="400px"/>
+        <figcaption>cow.dae</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part1_ex3.png dae/sky/CBempty.dae -->
+        <img src="images/part1_ex3.png" align="middle" width="400px"/>
+        <figcaption>CBempty.dae</figcaption>
+      </td>
+      <td>
+<!--  ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part1_ex4.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part1_ex4.png" align="middle" width="400px"/>
+        <figcaption>/CBspheres_lambertian.dae</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+
+
+<h2 align="middle">Part 2: Bounding Volume Hierarchy (20 Points)</h2>
+<!-- Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
+Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
+Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
+
+<h3>
+  Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
+</h3>
+<p>
+    For each iteration of constructing BVH, the splitting plane is heuristically determined as normal to any of XYZ axes and has the average centroid of the objects. The sidedness is determined by the sidedness of an object centroid for the splitting plane. The axis of splitting is decided by the axis that minimizes a split cost which is heuristically defined as the surface of bbox of the split node multiplied by the number of objects in that split. The cost for each of left and right nodes are summed and compared for each axis to find the optimal axis. <br>
+
+    After finding the plane, the primitives are split to left and right nodes, and then the iterator is reassigned to consecutively sweep over either of splits. This splitting is done by recursive call until the base condition (leaf node) where the number of primitives is below the max leaf size.
+</p>
+
+<h3>
+  Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part2_ex1.png dae/meshedit/maxplanck.dae -->
+        <img src="images/part2_ex1.png" align="middle" width="400px"/>
+        <figcaption>maxplanck.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part2_ex2.png dae/sky/CBlucy.dae-->
+        <img src="images/part2_ex2.png" align="middle" width="400px"/>
+        <figcaption>CBlucy.dae</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part2_ex3.png dae/meshedit/peter.dae-->
+        <img src="images/part2_ex3.png" align="middle" width="400px"/>
+        <figcaption>peter.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f docs/images/part2_ex4.png dae/sky/CBdragon.dae-->
+        <img src="images/part2_ex4.png" align="middle" width="400px"/>
+        <figcaption>CBdragon.dae</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+
+<h3>
+  Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.
+</h3>
+<p>
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f dummy.png dae/meshedit/cow.dae -->
+<!-- ./xcode/Debug/pathtracer -r 800 600 -f dummy.png dae/sky/teapot.dae -->
+  The experiment was conducted for cow.dae and teapot.dae for comparing the effect of BVH acceleration (we chose these since others take very long time or are too simple). Without the acceleration, rendering cow.dae takes 105 seconds in average and for bunny.dae, it takes 37 seconds in average. However, with BVH acceleration, it only takes 0.2 seconds and 0.17 seconds for cow.dae and teapot.dae, respectively. This suggests that the order of magnitude of gain by BVH is very large.
+</p>
+<br>
+
+<h2 align="middle">Part 3: Direct Illumination (20 Points)</h2>
+<!-- Walk through both implementations of the direct lighting function.
+Show some images rendered with both implementations of the direct lighting function.
+Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
+Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. -->
+
+<h3>
+  Walk through both implementations of the direct lighting function.
+</h3>
+<p>
+    For this part, the illumination by direct light is done by sum of zero bounce radiance and one bounce radiance. The zero bounce radiance is basically the light directly from emission source, and the one bounce radiance is a radiance by one-bounce from the light source. So for the one bounce radiance, the incoming ray is sampled from the intersecting point of the object and the camera view. Two sampling methods are tried: 1) the incoming ray is sampled by uniform hemisphere, and 2) the ray is sampled by importance sampling which is between the light source, powered by sample_L (this is done by clipping the range of t to [EPS_F,distToLight-EPS_F]). The BSDF is fixed to be diffusive, so f is albedo devided by pi regardless of in/out solid angles. For uniform sampling, the sampling is done on object normal coordinate, so proper transforms are done, and for the importance sampling, the sampling is done on world coordinate. For the monte carlo estimation, each sampled L is divided by probability density where the former method is uniform to be 2PI (hemisphere) and the latter is given by sample_L function. 
+</p>
+
+<h3>
+  Show some images rendered with both implementations of the direct lighting function.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <!-- Header -->
+    <tr align="center">
+      <th>
+        <b>Uniform Hemisphere Sampling</b>
+      </th>
+      <th>
+        <b>Light Sampling</b>
+      </th>
+    </tr>
+    <br>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 16 -l 8 -H -f docs/images/part3_ex1.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex1.png" align="middle" width="400px"/>
+        <figcaption>CBbunny.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1 -l 1 -m 1 -f docs/images/part3_ex2.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex2.png" align="middle" width="400px"/>
+        <figcaption>CBbunny.dae</figcaption>
+      </td>
+    </tr>
+    <br>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 64 -l 32 -m 6 -H -f docs/images/part3_ex3.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex3.png" align="middle" width="400px"/>
+        <figcaption>CBbunny.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 64 -l 32 -m 6 -f docs/images/part3_ex4.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex4.png" align="middle" width="400px"/>
+        <figcaption>CBbunny.dae</figcaption>
+      </td>
+    </tr>
+    <br>
+  </table>
+</div>
+<br>
+
+<h3>
+  Focus on one particular scene with at least one area light and compare the noise levels in <b>soft shadows</b> when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, <b>not</b> uniform hemisphere sampling.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1 -l 1 -m 6 -f docs/images/part3_ex5.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex5.png" align="middle" width="200px"/>
+        <figcaption>1 Light Ray (CBbunny.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1 -l 4 -m 6 -f docs/images/part3_ex6.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex6.png" align="middle" width="200px"/>
+        <figcaption>4 Light Rays (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1 -l 16 -m 6 -f docs/images/part3_ex7.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex7.png" align="middle" width="200px"/>
+        <figcaption>16 Light Rays (CBbunny.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1 -l 64 -m 6 -f docs/images/part3_ex8.png -r 480 360 dae/sky/CBbunny.dae -->
+        <img src="images/part3_ex8.png" align="middle" width="200px"/>
+        <figcaption>64 Light Rays (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<p>
+    The effect of the number of rays is shown in the bottom figure. The same CBbunny.dae is chosen for this analysis. With more light rays, the rendering is getting improved.
+</p>
+<br>
+
+<h3>
+  Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
+</h3>
+<p>
+    When comparing hemisphere sampling and light sampling, the rendering is much smoother with light sampling when the number of light rays is limited (top figure, top row). Also, with 32 light rays, the hemisphere sampling is still buzzy but light sampling is very clean (top figure, bottow row). Thus, for the same amount of computation, light sampling can yield a better illumination estimation.
+</p>
+<br>
+
+
+<h2 align="middle">Part 4: Global Illumination (20 Points)</h2>
+<!-- Walk through your implementation of the indirect lighting function.
+Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
+Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
+For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
+Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
+You will probably want to use the instructional machines for the above renders in order to not burn up your own computer for hours. -->
+
+<h3>
+  Walk through your implementation of the indirect lighting function.
+</h3>
+<p>
+    The global illumination is implemented by recursively tracking rays more than one bounce. The mechanism of calulating radiance is same as the previous part but recursively called by feeding the intersecting point and the sampled incoming ray. The recursive call ends until the coin flipping with the termination probability of 0.35 (russian roulette) or the depth of the ray is smaller than 1, which decreases for each call (so until the maximum number of calls is reached).  
+</p>
+<br>
+
+<h3>
+  Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 5 -r 480 360 -f docs/images/part4_ex1.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex1.png" align="middle" width="400px"/>
+        <figcaption>CBspheres_lambertian.dae</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 5 -r 480 360 -f docs/images/part4_ex2.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex2.png" align="middle" width="400px"/>
+        <figcaption>CBbunny.dae</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+
+<h3>
+  Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 1 -r 480 360 -f docs/images/part4_ex3.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex3.png" align="middle" width="400px"/>
+        <figcaption>Only direct illumination (CBspheres_lambertian.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 5 -r 480 360 -f docs/images/part4_ex4.png dae/sky/CBspheres_lambertian.dae -->
+
+        <img src="images/part4_ex4.png" align="middle" width="400px"/>
+        <figcaption>Only indirect illumination (CBspheres_lambertian.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+<p>
+    For the first demo (top figure), both direct and indirect illumination, the rendering examples for CBspheres_lambertian.dae and CBbunny.dae are chosen. The depth, m, is selected as 5 and the samples per pixel are set as 1024, as instructed. Other settings are default. For the second demo, only direct and only indirect illumination, those for CBspheres_lambertian.dae are shown in the bottom figure. With additional indirect illumination, the scenes are brighter. And only with indirect illumination show some brightened scene but not from the light above, more from ambient illuminations.
+</p>
+<br>
+
+<h3>
+  For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 0 -r 480 360 -f docs/images/part4_ex5.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex5.png" align="middle" width="400px"/>
+        <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 1 -r 480 360 -f docs/images/part4_ex6.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex6.png" align="middle" width="400px"/>
+        <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 2 -r 480 360 -f docs/images/part4_ex7.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex7.png" align="middle" width="400px"/>
+        <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 3 -r 480 360 -f docs/images/part4_ex8.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex8.png" align="middle" width="400px"/>
+        <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 1024 -m 100 -r 480 360 -f docs/images/part4_ex9.png dae/sky/CBbunny.dae -->
+        <img src="images/part4_ex9.png" align="middle" width="400px"/>
+        <figcaption>max_ray_depth = 100 (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+<p>
+    For m=0, no bounce is allowed, so only the light from the source on the ceiling is visible. For m=1, this is the same as one bounce case (direct illumination), so the part of the ceiling other than light source is still dark. This part is visible for m>1, by indirect illumination. With only depth of two (m=2), the indirect illumination is sufficiently implemented to show illuminance of other shaded parts of the scene. Though, the scene is getting brighter as the depth is increasing. But the gain is not linear as the illumination is exponentially decreasing by every bounce. Thus, there is no big difference between m=3 and m=1024. 
+</p>
+<br>
+
+<h3>
+  Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 1 -m 3 -r 480 360 -f docs/images/part4_ex10.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex10.png" align="middle" width="400px"/>
+        <figcaption>1 sample per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 2 -m 3 -r 480 360 -f docs/images/part4_ex11.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex11.png" align="middle" width="400px"/>
+        <figcaption>2 samples per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 4 -m 3 -r 480 360 -f docs/images/part4_ex12.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex12.png" align="middle" width="400px"/>
+        <figcaption>4 samples per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 8 -m 3 -r 480 360 -f docs/images/part4_ex13.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex13.png" align="middle" width="400px"/>
+        <figcaption>8 samples per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 16 -m 3 -r 480 360 -f docs/images/part4_ex14.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex14.png" align="middle" width="400px"/>
+        <figcaption>16 samples per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 64 -m 3 -r 480 360 -f docs/images/part4_ex15.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex15.png" align="middle" width="400px"/>
+        <figcaption>64 samples per pixel (CBspheres_lambertian.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -l 4 -s 1024 -m 3 -r 480 360 -f docs/images/part4_ex16.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part4_ex16.png" align="middle" width="400px"/>
+        <figcaption>1024 samples per pixel (example1.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+<p>
+    With the small number of samples, the scenes are buzzy. Such noise remains upto s=64. This is get finer while increasing the number of samples. For s=1024, the resulting scene is perfectly fine-grained.
+</p>
+<br>
+
+
+<h2 align="middle">Part 5: Adaptive Sampling (20 Points)</h2>
+<!-- Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
+Pick one scene and render it with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth. -->
+
+<h3>
+  Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
+</h3>
+<p>
+    YOUR RESPONSE GOES HERE
+</p>
+<br>
+
+<h3>
+  Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.
+</h3>
+<!-- Example of including multiple figures -->
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 2048 -a 64 0.05 -l 1 -m 5 -r 480 360 -f docs/images/part5_ex1.png dae/sky/CBbunny.dae -->
+        <img src="images/part5_ex1.png" align="middle" width="400px"/>
+        <figcaption>Rendered image (CBbunny.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/part5_ex1_rate.png" align="middle" width="400px"/>
+        <figcaption>Sample rate image (CBbunny.dae)</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+<!-- ./xcode/Debug/pathtracer -t 8 -s 2048 -a 64 0.05 -l 1 -m 5 -r 480 360 -f docs/images/part5_ex2.png dae/sky/CBspheres_lambertian.dae -->
+        <img src="images/part5_ex2.png" align="middle" width="400px"/>
+        <figcaption>Rendered image (CBspheres_lambertian.dae)</figcaption>
+      </td>
+      <td>
+        <img src="images/part5_ex2_rate.png" align="middle" width="400px"/>
+        <figcaption>Sample rate image (CBspheres_lambertian.dae)</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+
+
+</body>
 </html>

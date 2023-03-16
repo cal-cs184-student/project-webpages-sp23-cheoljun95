@@ -63,7 +63,7 @@
   Briefly explain de Casteljau's algorithm and how you implemented it in order to evaluate Bezier curves.
 </b>
 <p>
-    De Casteljau's algorithm is a recursive method used to compute points on a Bezier curve. It works by breaking down the curve into smaller segments, and then calculating the coordinates of the points that lie on those segments. The evaluateStep function take a list of N points. The linear interpolation is done for each adjacent pair using this->t as ratio. This results in N-1 points. If N==1 the position of the point is returned. This single evaluateStep is done until the number of points are reduced to 1.
+    De Casteljau's algorithm is a recursive method used to compute points on a Bezier curve. It works by breaking down the curve into smaller segments, and then calculating the coordinates of the points that lie on those segments. For the implementation, the evaluateStep function take a list of N points. The linear interpolation is done for each adjacent pair using this->t as ratio. This results in N-1 points. If N==1 the position of the point is returned. This single evaluateStep is done until the number of points are reduced to 1.
 </p>
 <br>
 
@@ -330,10 +330,20 @@
     If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
 </b>
 <p>
-    Boundary edges are handled by creating and rewiring non-boundary parts only. One special care is done to point non-boundary face to m->b and c->m. 
+    Boundary edges are handled by creating and rewiring non-boundary parts only. One special care is done to point non-boundary face to m->b and c->m. The below figure is the screenshot of the implementation (code) and example result on maxplanck.dae. 
 </p>
 <br>
-
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/part5_bd_code.png" align="middle" width="300px"/>
+        <figcaption>Implementation for handling boundary split</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
 <div align="middle">
   <table style="width:100%">
     <tr align="center">
