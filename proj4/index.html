@@ -69,7 +69,7 @@
   <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
   <h1 align="middle">Project 4: Cloth Simulator</h1>
   <h2 align="middle">Cheol Jun Cho</h2>
-  <h2 align="middle">Website URL: <a href=https://cheoljun95.github.io/proj-webpage-template/proj4/index.html>https://cheoljun95.github.io/proj-webpage-template/proj4/index.html</a></h2>
+  <h2 align="middle">Website URL: <a href=https://cal-cs184-student.github.io/project-webpages-sp23-cheoljun95/proj4/index.html>https://cal-cs184-student.github.io/project-webpages-sp23-cheoljun95/proj4/index.html</a></h2>
 
   <br><br>
 
@@ -90,10 +90,10 @@
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/p1_1.png" align="middle" width="600vw" />
+            <img src="images/p1_1.png" align="middle" width="400vw" />
           </td>
           <td>
-            <img src="images/p1_2.png" align="middle" width="600vw" />
+            <img src="images/p1_2.png" align="middle" width="400vw" />
           </td>
           <td>
         </tr>
@@ -156,12 +156,15 @@
         <tr align="center">
           <td>
             <img src="images/p2_ks50000_mid.png" align="middle" width="300vw" />
+            <figcaption>ks=50000 N/m</figcaption>
           </td>
           <td>
             <img src="images/p2_ks5000_mid.png" align="middle" width="300vw" />
+            <figcaption>ks=5000 N/m</figcaption>
           </td>
           <td>
             <img src="images/p2_ks50_mid.png" align="middle" width="300vw" />
+            <figcaption>ks=50 N/m</figcaption>
           </td>
         </tr>
         <tr align="center">
@@ -189,7 +192,7 @@
     </b><p>
 
     <p>
-      The density parameter determines the weight of each point mass. So, higher the value, higher the force of gravity affected, and this factor exhibits similar patterns as ks in reverse way. The three different values for the density paramater are tried as belows (200, 15, and 2 g/cm^2). As shown here, the cloth with high density (200, left) is less stiff and more flapping and the cloth with low density (2, right) is stiff and without wrinkle. The trend is opposite from the above ks analysis. (ks is fixed as default, 5000 N/m) The resting state doesn't show much difference.
+      The density parameter determines the weight of each point mass. So, higher the value, higher the force of gravity affected, and this factor exhibits similar patterns as ks in reverse way. The three different values for the density paramater are tried as belows (200, 15, and 2 g/cm^2). As shown here, the cloth with high density (200, left) is less stiff and more flapping and the cloth with low density (2, right) is stiff and without wrinkle. The trend is opposite from the above ks analysis. (ks is fixed as default, 5000 N/m).
     </p>
 
     <div align="middle">
@@ -197,12 +200,15 @@
         <tr align="center">
           <td>
             <img src="images/p2_de200_mid.png" align="middle" width="300vw" />
+            <figcaption>density=200 g/cm^2</figcaption>
           </td>
           <td>
             <img src="images/p2_ks5000_mid.png" align="middle" width="300vw" />
+            <figcaption>density=15 g/cm^2</figcaption>
           </td>
           <td>
             <img src="images/p2_de2_mid.png" align="middle" width="300vw" />
+            <figcaption>density=2 g/cm^2</figcaption>
           </td>
         </tr>
         <tr align="center">
@@ -235,12 +241,16 @@
     <p>
       The damping parameter defines how much of the momentum remains, so it is controlling the level of inertia. With small damping parameter, the point mass will be affected more by the accelerations. Thus by reducing the damping from 20% to 5% the cloth is more flopping as it has low ks or high density and also it shows large swinging movement going over the center position, which was not observable from previous experiments. The ks and density are set as default: 5000 N/m and 15 g/cm^2.
 
-      However, when the damping is increased to 50%, the cloth doesn't show any flopping while falling and the speed is very slow.
+      However, when the damping is increased to 50%, the cloth doesn't show any flopping while falling and the speed is very slow. The resting state doesn't show much difference
     </p>
 
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
+          <td>
+            <img src="images/p2_da50_mid.png" align="middle" width="300vw" />
+            <figcaption>damping=50% falling</figcaption>
+          </td>
           <td>
             <img src="images/p2_da005_mid.png" align="middle" width="300vw" />
             <figcaption>damping=5% falling</figcaption>
@@ -249,19 +259,16 @@
             <img src="images/p2_da005_mid2.png" align="middle" width="300vw" />
             <figcaption>damping=5% going over</figcaption>
           </td>
-          <td>
-            <img src="images/p2_da005_rest.png" align="middle" width="300vw" />
-            <figcaption>damping=5% resting</figcaption>
-          </td>
+          
         </tr>
         <tr align="center">
           <td>
-            <img src="images/p2_da50_mid.png" align="middle" width="300vw" />
-            <figcaption>damping=50% falling</figcaption>
-          </td>
-          <td>
             <img src="images/p2_da50_rest.png" align="middle" width="300vw" />
             <figcaption>damping=50% resting</figcaption>
+          </td>
+          <td>
+            <img src="images/p2_da005_rest.png" align="middle" width="300vw" />
+            <figcaption>damping=5% resting</figcaption>
           </td>
         </tr>
         
@@ -305,13 +312,30 @@
     </p>
     <div align="middle">
       <table style="width:100%">
+
+        <tr align="center">
+          <td>
+            <img src="images/p2_pinned4_2.png" align="middle" width="300vw" />
+          </td>
+          <td>
+            <img src="images/p2_normal.png" align="middle" width="300vw" />
+            <figcaption>pinned4 normal shaded</figcaption>
+          </td>
+          <td>
+            <img src="images/p2_phong.png" align="middle" width="300vw" />
+            <figcaption>pinned4 Blinn-Phong shaded</figcaption>
+          </td>
+        </tr>
         <tr align="center">
           <td>
             <img src="images/p2_pinned4.png" align="middle" width="300vw" />
           </td>
+          
           <td>
-            <img src="images/p2_pinned4_2.png" align="middle" width="300vw" />
+            <img src="images/p2_phong_2.png" align="middle" width="300vw" />
+            <figcaption>pinned4 Blinn-Phong shaded diff. angle</figcaption>
           </td>
+          
           <td>
         </tr>
       </table>
@@ -532,16 +556,16 @@
       <table style="width:100%">
         <tr align="center">
           <td>
-              <img src="images/texture_1.png" align="middle" width="400px" />
+              <img src="images/texture_1.png" align="middle" width="300px" />
               <figcaption>Texture image</figcaption>
               
           </td>
           <td>
-              <img src="images/p5_texture1.png" align="middle" width="400px" />
+              <img src="images/p5_texture1.png" align="middle" width="300px" />
               <figcaption>Texture mapping at the initial state</figcaption>
           </td>
           <td>
-              <img src="images/p5_texture2.png" align="middle" width="400px" />
+              <img src="images/p5_texture2.png" align="middle" width="300px" />
               <figcaption>Texture mapping at the resting state</figcaption>
           </td>
         </tr>
@@ -562,7 +586,7 @@
     </b>
 
     <p>
-      The belowws show cloth and sphere for bump mapping and displacement mapping. I used the brick wall texture instead of the default one. Other parameters are set as suggested: Normal=2, height=1 for bump mapping and Normal=100, height=0.02 for displacement mapping. As shown in the below figures both are quite providing the texture information but dispplacement is showing more realistic rendering since it actually reflects the real bumps from the bricks in the texture. 
+      The belows show cloth and sphere for bump mapping and displacement mapping. I used the brick wall texture instead of the default one. Other parameters are set as suggested: Normal=2, height=1 for bump mapping and Normal=100, height=0.02 for displacement mapping. As shown in the below figures both are quite providing the texture information but dispplacement is showing more realistic rendering since it actually reflects the real bumps from the bricks in the texture. 
     </p>
     <div align="middle">
       <table style="width:100%">
@@ -592,7 +616,7 @@
     </div>
 
     <p>
-      The coarseness is controlled as instructed (16 vs 128) and the results for each bump and displacement mapping are shown below. For bump mapping there is no big difference, but for displacement mapping, the coarse resolution cannot reflect the bumpness correctly. However, with high resolution, the bumpness is even more refined than the default case above and shows very realistic texture of bricks where contour of each block on the wall is finely rendered. 
+      The coarseness is controlled as instructed (16 vs 128) and the results for each bump and displacement mapping are shown below. For bump mapping there is no big difference, but for displacement mapping, the coarse resolution cannot reflect the bumpness correctly. However, with high resolution, the bumpness is even more refined than the default case above and shows very realistic texture of bricks where contour of each block on the wall is finely rendered. The bump mapping remains visually same after modifying coarseness. Thus with low resolustion, bump mapping is better than displacement mapping, and displacement mapping is better in high resolution. 
     </p>
 
     <div align="middle">
@@ -632,15 +656,15 @@
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/p5_mirror_1.png" align="middle" width="400vw" />
+            <img src="images/p5_mirror_1.png" align="middle" width="300vw" />
             <figcaption>Mirror Shader on the cloth & sphere</figcaption>
           </td>
           <td>
-            <img src="images/p5_mirror_2.png" align="middle" width="400vw" />
+            <img src="images/p5_mirror_2.png" align="middle" width="300vw" />
             <figcaption>Mirror Shader on the cloth on the sphere</figcaption>
           </td>
           <td>
-            <img src="images/p5_mirror_3.png" align="middle" width="400vw" />
+            <img src="images/p5_mirror_3.png" align="middle" width="300vw" />
             <figcaption>Mirror Shader on the cloth on the sphere (from low angle)</figcaption>
           </td>
           <td>
